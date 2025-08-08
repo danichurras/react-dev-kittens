@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Container } from "./components/Container"
 import { Header } from "./components/Header"
 import { KittenForm } from "./components/KittenForm"
@@ -20,6 +21,7 @@ function App() {
 }
 
 function Main() {
+  const [likedKittens, setLikedKittens] = useState<number[]>([1, 3])
 
   return (
     <main>
@@ -29,10 +31,10 @@ function Main() {
         <Search />
 
         {/* Shortlist */}
-        <Shortlist />
+        <Shortlist liked={likedKittens} setLiked={setLikedKittens} kittens={kittens} />
       </div>
       {/* Kitten list */}
-      <KittenList kittens={kittens} />
+      <KittenList kittens={kittens} liked={likedKittens} setLiked={setLikedKittens} />
       {/* New Kitten form */}
       <KittenForm />
     </main>

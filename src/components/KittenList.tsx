@@ -1,6 +1,16 @@
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { type Kitten } from "../types";
+import { Heart } from "lucide-react";
 
-export function KittenList({ kittens }: { kittens: Kitten[] }) {
+export function KittenList({
+  kittens,
+  liked,
+  setLiked
+}: {
+  kittens: Kitten[],
+  liked: number[],
+  setLiked: Dispatch<SetStateAction<number[]>>
+}) {
   return (
     <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {
@@ -17,30 +27,49 @@ export function KittenList({ kittens }: { kittens: Kitten[] }) {
                 <span className="text-slate-300">·</span>
                 <p className="text-slate-500">{kitten.trait}</p>
               </div>
-              <button className="group">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width={24}
-                  height={24}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className={
-                    kitten.liked
-                    ? "heart fill-pink-500 stroke-none"
-                    : "heart stroke-slate-200 group-hover:stroke-slate-300"
-                  }
-                >
-                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                </svg>
-              </button>
+              <LikeButton kitten={kitten} liked={liked} setLiked={setLiked} />
             </div>
           </li>
         ))
       }
     </ul>
+  )
+}
+
+function LikeButton({
+  kitten,
+  liked,
+  setLiked
+}: {
+    kitten: Kitten,
+    liked: number[],
+    setLiked: Dispatch<SetStateAction<number[]>>
+  }) {
+  const [count, setCount] = useState(liked.includes(kitten.id) ? 1 : 0)
+
+  function toggleLike() {
+    if (liked.includes(kitten.id)) {
+      setLiked(liked.filter(id => id !== kitten.id))
+      setCount(count - 1)
+    } else {
+      setLiked([...liked, kitten.id])
+      setCount(count + 1)
+    }
+  }
+
+  return(
+    <button className="group" onClick={toggleLike}>
+      <Heart  
+        className={
+          liked.includes(kitten.id)
+            ? "heart fill-pink-500 stroke-none"
+            : "heart stroke-slate-200 group-hover:stroke-slate-300"
+        } />
+      <span className={
+        liked.includes(kitten.id)
+          ? "text-pink-500"
+          : "text-slate-400 group-hover:text-slate-500"
+      }>{count}</span>
+    </button>
   )
 }
