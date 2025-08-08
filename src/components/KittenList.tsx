@@ -9,7 +9,7 @@ export function KittenList({ kittens }: { kittens: Kitten[] }) {
             <img
               className="h-100 w-full object-cover"
               alt={kitten.name}
-              src={kitten.imagePath}
+              src={import.meta.env.BASE_URL + kitten.imagePath}
             />
             <div className="gap flex items-center justify-between p-4 text-sm">
               <div className="flex items-center gap-2">
