@@ -6,5 +6,6 @@ export default defineConfig({
     plugins: [
         viteReact(),
         tailwindcss()
-    ]
+    ],
+    base: "/react-dev-kittens/"
 })
